@@ -1,0 +1,16 @@
+.popoverContent p {
+  font-size: 0.9rem !important;
+  line-height: 155%;
+}
+.bullet {
+  background-image: radial-gradient(
+    hsla(213.8, 100%, 96.9%, 0%),
+    hsla(211.7, 96.4%, 78.4%, 100%) 70%
+  );
+}
+.bullet:hover {
+  background-image: radial-gradient(
+    hsla(213.3, 96.9%, 87.3%, 40%),
+    hsla(213.1, 93.9%, 67.8%, 100%) 70%
+  );
+}
