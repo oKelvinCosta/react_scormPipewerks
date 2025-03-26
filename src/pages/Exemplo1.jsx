@@ -41,13 +41,18 @@ export default function Home() {
   const [lessonStatus, setlessonStatus] = useState(null);
 
   const handleConclude = () => {
+    // Se o código carregou o App corretamente, então já está conectado ao LMS/SCORM
+
     // Obtém o status da lição
-    const lessonStatus = SCORM.get("cmi.core.lesson_status");
+
     const studentName = SCORM.get("cmi.core.student_name");
-    alert(lessonStatus);
+
     alert(studentName);
+
     // Define o status da lição como 'completed'
     SCORM.set("cmi.core.lesson_status", "completed");
+    const lessonStatus = SCORM.get("cmi.core.lesson_status");
+    alert(lessonStatus);
 
     // Salva as alterações no LMS
     SCORM.save();
