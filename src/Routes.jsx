@@ -10,7 +10,7 @@ import Exemplo1 from "./pages/Exemplo1";
 import Exemplo2 from "./pages/Exemplo2";
 import Exemplo3 from "./pages/Exemplo3";
 import Exemplo4 from "./pages/Exemplo4";
-import Loading from "./components/Loading";
+import Loading from "./components/LoadScreen";
 
 // Route configuration component
 function RouteConfig() {

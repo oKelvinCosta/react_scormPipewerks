@@ -1,7 +1,7 @@
 import { useState, useEffect, useLayoutEffect } from "react";
 import Routes from "./Routes";
 import { SCORM } from "pipwerks-scorm-api-wrapper";
-import Loading from "./components/Loading";
+import LoadScreen from "./components/LoadScreen";
 
 function App() {
   const [scormInitialized, setScormInitialized] = useState(false);
@@ -60,7 +60,7 @@ function App() {
 
   // Tela de carregamento
   if (loading) {
-    return <Loading />;
+    return <LoadScreen />;
   }
 
   // Caso a API SCORM não tenha sido inicializada
@@ -74,7 +74,7 @@ function App() {
 
   return (
     <>
-      <h1>Bem-vindo, {studentName}!</h1>
+      <h1 className="text-center">Bem-vindo, {studentName}!</h1>
       <Routes />
     </>
   );

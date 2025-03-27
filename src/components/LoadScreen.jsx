@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Loading() {
+export default function LoadScreen() {
   return (
     <>
       <div className="loadscreen fixed h-svh w-full flex justify-center items-center bg-gray-100">
