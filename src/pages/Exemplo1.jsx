@@ -47,12 +47,12 @@ export default function Home() {
 
     const studentName = SCORM.get("cmi.core.student_name");
 
-    alert(studentName);
+    alert("cmi.core.student_name: " + studentName);
 
     // Define o status da lição como 'completed'
     SCORM.set("cmi.core.lesson_status", "completed");
     const lessonStatus = SCORM.get("cmi.core.lesson_status");
-    alert(lessonStatus);
+    alert("cmi.core.lesson_status: " + lessonStatus);
 
     // Salva as alterações no LMS
     SCORM.save();

@@ -13,47 +13,17 @@ function App() {
     setStudentName("Kelvin$$$");
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const handleWindowLoad = () => {
       console.log("Todos os recursos foram carregados.");
-      setLoading(false);
-      // setTimeout(() => {
-      //   setLoading(false);
-      // }, 5000);
+      setTimeout(() => {
+        setLoading(false);
+      }, 10000);
+      // setLoading(false);
     };
 
     // Adiciona o evento para detectar quando o HTML e os recursos foram carregados
     window.addEventListener("load", handleWindowLoad);
-
-    // Para a execução do código abaixo caso esteja em ambiente de desenvolvimento
-    if (isDevelopment) {
-      console.warn("API SCORM não disponível em ambiente de desenvolvimento.");
-      setScormInitialized(true);
-      developmentPlaceholder();
-      return () => window.removeEventListener("load", handleWindowLoad);
-    }
-
-    // Inicia SCORM
-    // SCORM.init() faz loop para tentar inicializar a API SCORM até que ela esteja disponível.
-    const initialized = SCORM.init();
-
-    // Se iniciado, deixa retornar o restante da aplicação
-    if (initialized) {
-      console.log("SCORM inicializado com sucesso.");
-      setScormInitialized(true);
-
-      const name = SCORM.get("cmi.core.student_name");
-      setStudentName(name);
-
-      // No LMS define a pontuação mínima para passar/
-      const scoreSetMin = SCORM.set("cmi.core.score.min", "0"); // Pontuação mínima possível.
-      const scoreSetMax = SCORM.set("cmi.core.score.max", "100"); // Define a pontuação máxima
-      const scoreSetRaw = SCORM.set("cmi.core.score.raw", "85"); // Define a pontuação do aluno
-
-      setLoading(false);
-    } else {
-      console.error("Falha ao inicializar a API SCORM.");
-    }
 
     return () => window.removeEventListener("load", handleWindowLoad);
   }, []);

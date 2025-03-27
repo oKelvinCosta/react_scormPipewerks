@@ -47,13 +47,13 @@ function AppRoutes() {
     // setTimeout(() => {
     //   setIsLoading(false);
     // }, 5000);
-    setIsLoading(false);
+    // setIsLoading(false);
   }, [navigate]);
 
   // Show loading component while loading
-  if (isLoading) {
-    return <Loading />;
-  }
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
 
   return (
     <>
