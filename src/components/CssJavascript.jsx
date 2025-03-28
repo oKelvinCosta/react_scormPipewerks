@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Teste() {
+export default function CssJavascript() {
   return <div style={styles.overlay}>teste</div>;
 }
 const styles = {

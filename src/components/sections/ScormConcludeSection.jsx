@@ -1,29 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import reactLogo from "@/assets/react.svg";
 import viteLogo from "/vite.svg";
 
 // SCORM
 import { SCORM } from "pipwerks-scorm-api-wrapper";
+import { LESSON_STATUS, FIELDS } from "@/ScormWrapper";
+
+console.log(LESSON_STATUS);
 
 export default function ScormConcludeSection() {
+  const [lessonStatus, setLessonStatus] = useState(null);
+
   const handleConclude = () => {
     // Se o código carregou o App corretamente, então já está conectado ao LMS/SCORM
 
-    // Obtém o status da lição
+    // Verifica se está conectado ao SCORM
 
-    const studentName = SCORM.get("cmi.core.student_name");
+    if (SCORM.connection.isActive) {
+      const studentName = SCORM.get(FIELDS.studentName);
+      alert("cmi.core.student_name: " + studentName);
 
-    alert("cmi.core.student_name: " + studentName);
+      // Define o status da lição como 'completed'
+      SCORM.set(FIELDS.lessonStatus, LESSON_STATUS.completed);
 
-    // Define o status da lição como 'completed'
-    SCORM.set("cmi.core.lesson_status", "completed");
-    const lessonStatus = SCORM.get("cmi.core.lesson_status");
-    alert("cmi.core.lesson_status: " + lessonStatus);
+      // Obtém o status da lição
+      setLessonStatus(SCORM.get(FIELDS.lessonStatus));
+      alert("cmi.core.lesson_status: " + lessonStatus);
 
-    // Salva as alterações no LMS
-    SCORM.save();
-    SCORM.quit();
+      // Salva as alterações no LMS
+      SCORM.save();
+
+      // Faz o lms encerrar a comunicação mandando para a página de conclusão
+      SCORM.quit();
+    }
   };
 
   return (
@@ -40,7 +50,13 @@ export default function ScormConcludeSection() {
           </div>
           <h1>Vite + React</h1>
           <div className="mb-10 mt-6">
-            <Button variant="secondary" onClick={() => handleConclude()}>
+            <Button
+              variant="secondary"
+              onClick={() => handleConclude()}
+              disabled={
+                !SCORM.connection.isActive || lessonStatus === "completed"
+              }
+            >
               SCORM Conclude
             </Button>
           </div>

@@ -10,9 +10,8 @@ import Exemplo1 from "./pages/Exemplo1";
 import Exemplo2 from "./pages/Exemplo2";
 import Exemplo3 from "./pages/Exemplo3";
 import Exemplo4 from "./pages/Exemplo4";
-import Loading from "./components/LoadScreen";
 
-// Route configuration component
+// Route pages configuration component
 function RouteConfig() {
   const myRoutes = [
     { path: "/", element: <Exemplo1 /> },
@@ -35,7 +34,6 @@ function RouteConfig() {
 // Main AppRoutes component
 function AppRoutes() {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
 
   // useEffect hook to handle navigation based on saved page in localStorage
   useEffect(() => {
@@ -43,17 +41,7 @@ function AppRoutes() {
     if (savedPage) {
       navigate(savedPage);
     }
-    // To Debug
-    // setTimeout(() => {
-    //   setIsLoading(false);
-    // }, 5000);
-    // setIsLoading(false);
   }, [navigate]);
-
-  // Show loading component while loading
-  // if (isLoading) {
-  //   return <Loading />;
-  // }
 
   return (
     <>

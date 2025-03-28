@@ -32,10 +32,22 @@ export default function ScormWrapper({ children }) {
       console.warn("API SCORM não disponível em ambiente de desenvolvimento.");
       setScormInitialized(true);
       developmentPlaceholder();
+      return () => window.removeEventListener("load", handleWindowLoad);
     }
   }
 
   useEffect(() => {
+    const handleWindowLoad = () => {
+      console.log("Todos os recursos foram carregados.");
+      setLoading(false);
+      // setTimeout(() => {
+      //   setLoading(false);
+      // }, 50000);
+    };
+
+    // Adiciona o evento para detectar quando o HTML e os recursos foram carregados
+    window.addEventListener("load", handleWindowLoad);
+
     development();
 
     // Inicia SCORM
@@ -59,7 +71,14 @@ export default function ScormWrapper({ children }) {
     } else if (!isDevelopment) {
       console.error("Falha ao inicializar a API SCORM.");
     }
+
+    return () => window.removeEventListener("load", handleWindowLoad);
   }, []);
+
+  // Tela de carregamento
+  if (loading) {
+    return <LoadScreen />;
+  }
 
   // Caso a API SCORM não tenha sido inicializada
   if (!scormInitialized) {
