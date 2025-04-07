@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import reactLogo from "@/assets/react.svg";
 import viteLogo from "/vite.svg";
@@ -7,10 +7,11 @@ import viteLogo from "/vite.svg";
 import { SCORM } from "pipwerks-scorm-api-wrapper";
 import { LESSON_STATUS, FIELDS } from "@/ScormWrapper";
 
-console.log(LESSON_STATUS);
-
 export default function ScormConcludeSection() {
   const [lessonStatus, setLessonStatus] = useState(null);
+  useEffect(() => {
+    console.log(LESSON_STATUS);
+  }, []);
 
   const handleConclude = () => {
     // Se o código carregou o App corretamente, então já está conectado ao LMS/SCORM

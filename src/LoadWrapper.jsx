@@ -13,13 +13,13 @@ export default function LoadWrapper({ children }) {
       }, 2000);
     };
 
-    // Adiciona o evento para detectar quando o HTML e os recursos foram carregados
+    // Adds the event to detect when the HTML and resources have been loaded
     window.addEventListener("load", handleWindowLoad);
 
     return () => window.removeEventListener("load", handleWindowLoad);
   }, []);
 
-  // Tela de carregamento
+  // Loading screen
   if (loading) {
     return <LoadScreen />;
   }
