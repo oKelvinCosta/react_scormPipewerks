@@ -11,7 +11,7 @@ import Exemplo2 from "./pages/Exemplo2";
 import Exemplo3 from "./pages/Exemplo3";
 import Exemplo4 from "./pages/Exemplo4";
 
-// Route pages configuration component
+// Route pages configuration component. Where the routes are defined.
 function RouteConfig() {
   const myRoutes = [
     { path: "/", element: <Exemplo1 /> },
@@ -32,6 +32,8 @@ function RouteConfig() {
 }
 
 // Main AppRoutes component
+// This component is responsible for rendering the Navigation and RouteConfig components
+// It uses the useEffect hook to navigate to a saved page in localStorage when the component mounts
 function AppRoutes() {
   const navigate = useNavigate();
 
