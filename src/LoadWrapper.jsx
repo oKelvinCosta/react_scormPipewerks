@@ -7,10 +7,12 @@ export default function LoadWrapper({ children }) {
   useEffect(() => {
     const handleWindowLoad = () => {
       console.log("Todos os recursos foram carregados.");
-      // setLoading(false);
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
+      setLoading(false);
+
+      // TO DEBUG
+      // setTimeout(() => {
+      //   setLoading(false);
+      // }, 2000);
     };
 
     // Adds the event to detect when the HTML and resources have been loaded

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   HashRouter,
   Route,
@@ -37,14 +37,15 @@ function RouteConfig() {
 function AppRoutes() {
   const navigate = useNavigate();
 
-  // useEffect hook to handle navigation based on saved page in localStorage
-  useEffect(() => {
+  // useLayoutEffect hook to handle navigation based on saved page in localStorage
+  // This hook runs after rendered, but before show any content to the user
+  useLayoutEffect(() => {
     const pagesCourse = localStorage.getItem("pagesCourse");
     if (pagesCourse) {
       let savedPage = JSON.parse(pagesCourse).currentPage;
       navigate(savedPage);
     }
-  }, [navigate]);
+  }, []);
 
   return (
     <>
