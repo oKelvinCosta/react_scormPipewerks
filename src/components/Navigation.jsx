@@ -5,8 +5,20 @@ export default function Navigation() {
   const Navigate = useNavigate();
 
   const handleSaveState = (currentPage) => {
-    localStorage.setItem("currentPage", currentPage);
+    let pagesCourse = {
+      pages: ["/", "/exemplo2", "/exemplo3", "/exemplo4"],
+      currentPage: currentPage,
+    };
+
+    localStorage.setItem("pagesCourse", JSON.stringify(pagesCourse));
+
+    Navigate(currentPage);
   };
+
+  const getPagesCourse = JSON.parse(localStorage.getItem("pagesCourse"));
+  const currentPageNumber =
+    getPagesCourse.pages.indexOf(getPagesCourse.currentPage) + 1;
+  const totalPages = getPagesCourse.pages.length;
 
   return (
     <nav className="my-8">
@@ -17,7 +29,6 @@ export default function Navigation() {
             <Button
               onClick={() => {
                 handleSaveState("/");
-                Navigate("/");
               }}
             >
               Home
@@ -27,7 +38,6 @@ export default function Navigation() {
             <Button
               onClick={() => {
                 handleSaveState("/exemplo2");
-                Navigate("/exemplo2");
               }}
             >
               About
@@ -37,7 +47,6 @@ export default function Navigation() {
             <Button
               onClick={() => {
                 handleSaveState("/exemplo3");
-                Navigate("/exemplo3");
               }}
             >
               Fase 1
@@ -47,13 +56,15 @@ export default function Navigation() {
             <Button
               onClick={() => {
                 handleSaveState("/exemplo4");
-                Navigate("/exemplo4");
               }}
             >
               Fase 2
             </Button>
           </li>
         </ul>
+        <div className="m-6">
+          Página {currentPageNumber}/{totalPages}
+        </div>
       </div>
     </nav>
   );

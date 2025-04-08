@@ -39,8 +39,9 @@ function AppRoutes() {
 
   // useEffect hook to handle navigation based on saved page in localStorage
   useEffect(() => {
-    const savedPage = localStorage.getItem("currentPage");
-    if (savedPage) {
+    const pagesCourse = localStorage.getItem("pagesCourse");
+    if (pagesCourse) {
+      let savedPage = JSON.parse(pagesCourse).currentPage;
       navigate(savedPage);
     }
   }, [navigate]);
