@@ -16,6 +16,11 @@ export default function Navigation() {
   };
 
   const getPagesCourse = JSON.parse(localStorage.getItem("pagesCourse"));
+  if (!getPagesCourse) {
+    handleSaveState("/");
+    // Update the getPagesCourse variable
+    getPagesCourse = JSON.parse(localStorage.getItem("pagesCourse"));
+  }
   const currentPageNumber =
     getPagesCourse.pages.indexOf(getPagesCourse.currentPage) + 1;
   const totalPages = getPagesCourse.pages.length;
