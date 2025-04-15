@@ -4,7 +4,10 @@ export default function LoadScreen() {
   return (
     <>
       <div className="loadscreen fixed h-svh w-full flex justify-center items-center bg-gray-100">
-        <div role="status" className="absolute top-[45%] left-[49%] scale-150">
+        <div
+          role="status"
+          className="absolute top-[45%] left-[49%] translate-x-[-50%] scale-150"
+        >
           <svg
             aria-hidden="true"
             className="inline w-8 h-8 text-gray-300 animate-spin dark:text-gray-600 fill-indigo-600 "

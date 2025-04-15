@@ -1,5 +1,6 @@
 import { useState, useEffect, useLayoutEffect } from "react";
 import { SCORM } from "pipwerks-scorm-api-wrapper";
+import LoadScreen from "./components/LoadScreen";
 
 export const LESSON_STATUS = {
   notAttempted: "not attempted",
@@ -19,10 +20,12 @@ export const FIELDS = {
 export default function ScormWrapper({ children }) {
   const [scormInitialized, setScormInitialized] = useState(false);
   const [error, setError] = useState(false);
-  const isDevelopment = process.env.NODE_ENV === "development"; // Returns TRUE if the environment is development. When building, the value will be "production", returning false.
+  // Returns TRUE if the environment is development. When building, the value will be "production", returning false.
+  const isDevelopment = process.env.NODE_ENV === "development";
 
   useEffect(() => {
     const initialize = async () => {
+      // In Devlopment environment
       if (isDevelopment) {
         console.log(
           "%c ########## DEVELOPMENT ENVIRONMENT ########## ",
@@ -36,15 +39,13 @@ export default function ScormWrapper({ children }) {
           "%c ----------------------------------------------- ",
           "background: #00f; color: white"
         );
+
         setScormInitialized(true);
         return;
       }
       try {
         await initializeScorm(20, 100); // Initialize SCORM with retries
         setScormInitialized(true);
-
-        const name = SCORM.get("cmi.core.student_name");
-        console.log("cmi.core.student_name", name);
       } catch (err) {
         console.error(err.message);
         setError(true);
@@ -64,11 +65,12 @@ export default function ScormWrapper({ children }) {
     );
   }
 
+  // Loading screen
   // If the SCORM API has not been initialized
   if (!scormInitialized) {
     return (
       <div>
-        <p>Carregando...</p>
+        <LoadScreen />
       </div>
     );
   }
@@ -76,25 +78,26 @@ export default function ScormWrapper({ children }) {
   return <>{children}</>;
 }
 
-// Initialize SCORM with retries
-// The pipwerks-scorm-api-wrapper cover only find the API in the window object. But doesn't cover the case when the API is not available or delayed. So we need to create a function to retry the initialization of the SCORM API.
+/**
+ * Initializes the SCORM API with retries and delay.
+ * The pipwerks-scorm-api-wrapper cover only find the API in the window object.
+ * But doesn't cover the case when the API is not available or delayed.
+ * So we need to create a function to retry the initialization of the SCORM API.
+ *
+ * @param {number} [retries=5] - The maximum number of retry attempts.
+ * @param {number} [delay=1000] - The delay in milliseconds between attempts.
+ * @returns {Promise<boolean>} - A promise that resolves to true if SCORM is initialized successfully.
+ */
 function initializeScorm(retries = 5, delay = 1000) {
   return new Promise((resolve, reject) => {
     const attemptInitialization = (attempt) => {
       console.log(`Tentativa de inicialização do SCORM: ${attempt}`);
       const initialized = SCORM.init();
 
-      // Success
       if (initialized) {
         console.log("SCORM inicializado com sucesso.");
-        // In the LMS, define the minimum score to pass
-        // const scoreSetMin = SCORM.set("cmi.core.score.min", "0"); // Minimum possible score.
-        // const scoreSetMax = SCORM.set("cmi.core.score.max", "100"); // Defines the maximum score
-        // const scoreSetRaw = SCORM.set("cmi.core.score.raw", "85"); // Defines the student's score
         resolve(true);
-      }
-      // The loop is is trying until the numer of retries is reached.
-      else if (attempt < retries) {
+      } else if (attempt < retries) {
         console.warn(
           `Falha na tentativa ${attempt}. Tentando novamente em ${delay}ms...`
         );
