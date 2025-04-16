@@ -3,27 +3,63 @@ import {
   HashRouter,
   Route,
   Routes as RoutesViews,
-  useNavigate,
+  Navigate,
 } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import Exemplo1 from "./pages/Exemplo1";
 import Exemplo2 from "./pages/Exemplo2";
 import Exemplo3 from "./pages/Exemplo3";
 import Exemplo4 from "./pages/Exemplo4";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
-// Route pages configuration component. Where the routes are defined.
-function RouteConfig() {
-  const myRoutes = [
+function AppRoutes() {
+  const [routes, setRoutes] = useState([
     { path: "/", element: <Exemplo1 /> },
     { path: "/exemplo2", element: <Exemplo2 /> },
     { path: "/exemplo3", element: <Exemplo3 /> },
     { path: "/exemplo4", element: <Exemplo4 /> },
-  ];
+  ]);
+
+  const { setLocalStorage, getLocalStorage } = useLocalStorage("pagesCourse");
+
+  const updateRoutes = () => {
+    const pagesCourse = getLocalStorage("pagesCourse");
+    console.log("updateRoutes", getLocalStorage("pagesCourse"));
+    const savedPage = pagesCourse ? pagesCourse.currentPage : "/";
+
+    const dynamicRoutes = [
+      {
+        path: "/",
+        element:
+          savedPage !== "/" ? (
+            <Navigate to={savedPage} replace />
+          ) : (
+            <Exemplo1 />
+          ),
+      },
+      { path: "/exemplo2", element: <Exemplo2 /> },
+      { path: "/exemplo3", element: <Exemplo3 /> },
+      { path: "/exemplo4", element: <Exemplo4 /> },
+    ];
+
+    setRoutes(dynamicRoutes);
+  };
+
+  // 1
+  // Execute and runs when the component mounts
+  // Make the first routes happen
+
+  // 2
+  // When the page is reloaded, the hook runs and direct to the right page
+  useLayoutEffect(() => {
+    updateRoutes();
+  }, []);
 
   return (
     <>
+      <Navigation onNavigate={updateRoutes} />
       <RoutesViews>
-        {myRoutes.map((route, index) => (
+        {routes.map((route, index) => (
           <Route key={index} path={route.path} element={route.element} />
         ))}
       </RoutesViews>
@@ -31,31 +67,6 @@ function RouteConfig() {
   );
 }
 
-// Main AppRoutes component
-// This component is responsible for rendering the Navigation and RouteConfig components
-// It uses the useEffect hook to navigate to a saved page in localStorage when the component mounts
-function AppRoutes() {
-  const navigate = useNavigate();
-
-  // useLayoutEffect hook to handle navigation based on saved page in localStorage
-  // This hook runs after rendered, but before show any content to the user
-  useLayoutEffect(() => {
-    const pagesCourse = localStorage.getItem("pagesCourse");
-    if (pagesCourse) {
-      let savedPage = JSON.parse(pagesCourse).currentPage;
-      navigate(savedPage);
-    }
-  }, []);
-
-  return (
-    <>
-      <Navigation />
-      <RouteConfig /> {/* Use the RouteConfig component */}
-    </>
-  );
-}
-
-// Main Routes component with HashRouter
 export default function Routes() {
   return (
     <HashRouter>

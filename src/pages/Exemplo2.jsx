@@ -4,6 +4,7 @@ export default function About() {
   return (
     <>
       <div className="container--780">
+        <h1>Exemple2.jsx</h1>
         <p>
           Mussum Ipsum, cacilds vidis litro abertis. Atirei o pau no gatis, per
           gatis num morreus. Manduma pindureta quium dia nois paga. Mauris nec

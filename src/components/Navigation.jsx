@@ -1,69 +1,59 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
-export default function Navigation() {
+export default function Navigation({ onNavigate }) {
   const Navigate = useNavigate();
+  const { setLocalStorage, getLocalStorage } = useLocalStorage("pagesCourse");
 
-  const handleSaveState = (currentPage) => {
+  const handleSaveState = (goingPage) => {
     let pagesCourse = {
       pages: ["/", "/exemplo2", "/exemplo3", "/exemplo4"],
-      currentPage: currentPage,
+      currentPage: goingPage,
     };
 
-    localStorage.setItem("pagesCourse", JSON.stringify(pagesCourse));
+    // localStorage.setItem("pagesCourse", JSON.stringify(pagesCourse));
+    setLocalStorage("pagesCourse", pagesCourse);
+    Navigate(goingPage);
 
-    Navigate(currentPage);
+    // Atualiza as rotas no AppRoutes
+    if (onNavigate) {
+      onNavigate();
+    }
   };
 
-  const getPagesCourse = JSON.parse(localStorage.getItem("pagesCourse"));
+  // let getPagesCourse = JSON.parse(localStorage.getItem("pagesCourse"));
+  let getPagesCourse = getLocalStorage("pagesCourse");
   if (!getPagesCourse) {
     handleSaveState("/");
-    // Update the getPagesCourse variable
-    getPagesCourse = JSON.parse(localStorage.getItem("pagesCourse"));
+    getPagesCourse = getLocalStorage("pagesCourse");
   }
+
   const currentPageNumber =
     getPagesCourse.pages.indexOf(getPagesCourse.currentPage) + 1;
   const totalPages = getPagesCourse.pages.length;
 
   return (
     <nav className="my-8">
-      <div className="container  text-center">
+      <div className="container text-center">
         <p className="">Navigation</p>
         <ul className="flex justify-center space-x-4">
           <li>
-            <Button
-              onClick={() => {
-                handleSaveState("/");
-              }}
-            >
-              Home
+            <Button onClick={() => handleSaveState("/")}>Exemple 1</Button>
+          </li>
+          <li>
+            <Button onClick={() => handleSaveState("/exemplo2")}>
+              Exemple 2
             </Button>
           </li>
           <li>
-            <Button
-              onClick={() => {
-                handleSaveState("/exemplo2");
-              }}
-            >
-              About
+            <Button onClick={() => handleSaveState("/exemplo3")}>
+              Exemple 3
             </Button>
           </li>
           <li>
-            <Button
-              onClick={() => {
-                handleSaveState("/exemplo3");
-              }}
-            >
-              Fase 1
-            </Button>
-          </li>
-          <li>
-            <Button
-              onClick={() => {
-                handleSaveState("/exemplo4");
-              }}
-            >
-              Fase 2
+            <Button onClick={() => handleSaveState("/exemplo4")}>
+              Exemple 4
             </Button>
           </li>
         </ul>
